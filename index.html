@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> HTML </title>
+    <meta charset="UTF-8">
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            display: flex;
+            margin-top: 5%;
+            height: 100%;
+        }
+        
+        .left-half,
+        .right-half {
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            height: 100%;
+        }
+        
+        .main_image {
+            width: 100%;
+        }
+        
+        .tag {
+            background-color: palegreen;
+            width: 10%;
+            font-size: 25px;
+        }
+        
+        .comment_input {
+            width: 50%;
+            height: 20%;
+        }
+        
+        img {
+            width: 40%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="left-half">
+            <div id="images_container">
+            </div>
+            <button> Remove image </button>
+
+        </div>
+        <div class="right-half">
+            <h2 id="year_info"> YEAR </h2>
+            <h2 id="name_info"> NAME </h2>
+            <h2 id="path_info"> PATH </h2>
+            <h2>Tags:</h2>
+            Что на картинке
+
+            <select id="picture_select">
+                <option value = "сцена">сцена</option>
+                <option value = "выставочный стенд">выставочный стенд</option>
+                <option value = "фотозона">фотозона</option>
+                <option value = "оформление">оформление</option>
+            </select>
+            <br> Назначение
+            <select id="type_select">
+                <option value="концерт"> концерт</option>
+                <option value="премия"> премия</option>
+                <option value="фестиваль"> фестиваль</option>
+                <option value="гос"> гос</option>
+                <option value="мероприятие"> мероприятие</option>
+            </select>
+            <br> Оценочная стоимость
+            <select id="coast_select">
+                <option value="дешево"> дешево</option>
+                <option value="средне"> средне</option>
+                <option value="дорого"> дорого</option>
+            </select>
+            <br> Количество экранов
+            <select id="screens_select">
+                <option value="много"> много </option>
+                <option value="мало"> мало </option>
+            </select>
+            <br> Площадка
+            <select id="place_select">
+                <option value="ГКД"> ГКД </option>
+                <option value="КЗ"> КЗ </option>
+                <option value="Москва"> Москва </option>
+                <option value="Live Arena"> Live Arena </option>
+                <option value="иное"> иное </option>
+            </select>
+            <br>Реализовано
+            <select id="released_select">
+                <option value="true">Да</option>
+                <option value="false">Нет</option>
+            </select>
+            <br>
+            <h2> Comment </h2>
+            <textarea class="comment_input" id="comment_input"> </textarea>
+            <br>
+            <br>
+            <div>
+                <button id="discard_button"> Discard event </button>
+                <button id="submit_button"> Submit </button>
+            </div>
+        </div>
+</body>
+<script>
+    async function makePostRequest(url, data) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error('Request failed with status ' + response.status);
+            }
+
+            const responseData = await response.json();
+
+            return responseData;
+        } catch (error) {
+            console.error('Error:', error.message);
+            throw error;
+        }
+    }
+
+    function fetchJsonData(url) {
+        return fetch(url)
+            .then((response) => response.json())
+            .then((jsonData) => {
+                return jsonData;
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    function render_event(event) {
+        year_info.innerText = event["year"]
+        name_info.innerText = event["name"]
+        path_info.innerText = event["path"]
+        event.images.forEach((img) => {
+            let image = document.createElement("img")
+            image.src = img
+            image.onclick = () => {
+                window.open(window.location.href + img);
+            }
+            images_container.appendChild(image)
+        })
+    }
+
+    let event = null
+
+    function get_event() {
+        let current_event = fetchJsonData(window.location.href + "get_json")
+        current_event.then((value) => {
+            event = value
+            render_event(event)
+
+        })
+    }
+    get_event()
+    submit_button.onclick = () => {
+        let tags = [
+            picture_select.value,
+            type_select.value,
+            coast_select.value,
+            screens_select.value,
+            place_select.value,
+            released_select.value,
+        ]
+        let comment = comment_input.value
+        let txt = ""
+        if (confirm("Subbmit with tags:\n" + tags + "\nComment:\n" + comment + " ?")) {
+            event.tags = tags
+            event.comment = comment
+            makePostRequest(window.location.href + "/submit", event)
+            setTimeout(()=>{
+                window.location.reload();
+            }, 1000);
+        } else {
+            txt = "Cancel!";
+        }
+    }
+    discard_button.onclick = () => {
+        let txt = ""
+        if (confirm("Are you sure you want to discard event?")) {
+            txt = "You've discarded event!";
+        } else {
+            txt = "Cancel!";
+        }
+    }
+</script>
+
+</html>
