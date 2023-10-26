@@ -37,4 +37,4 @@ def serve_index():
     return send_from_directory('.', 'index.html')
 
 
-app.run(host='0.0.0.0', port=6969)
+app.run(host='0.0.0.0', port=1583)

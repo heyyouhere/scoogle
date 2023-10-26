@@ -185,6 +185,7 @@
         if (confirm("Subbmit with tags:\n" + tags + "\nComment:\n" + comment + " ?")) {
             event.tags = tags
             event.comment = comment
+            event.checked = true
             makePostRequest(window.location.href + "/submit", event)
             setTimeout(()=>{
                 window.location.reload();
