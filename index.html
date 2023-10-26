@@ -60,14 +60,6 @@
             <h2 id="name_info"> NAME </h2>
             <h2 id="path_info"> PATH </h2>
             <h2>Tags:</h2>
-            Что на картинке
-
-            <select id="picture_select">
-                <option value = "сцена">сцена</option>
-                <option value = "выставочный стенд">выставочный стенд</option>
-                <option value = "фотозона">фотозона</option>
-                <option value = "оформление">оформление</option>
-            </select>
             <br> Назначение
             <select id="type_select">
                 <option value="концерт"> концерт</option>
@@ -75,12 +67,6 @@
                 <option value="фестиваль"> фестиваль</option>
                 <option value="гос"> гос</option>
                 <option value="мероприятие"> мероприятие</option>
-            </select>
-            <br> Оценочная стоимость
-            <select id="coast_select">
-                <option value="дешево"> дешево</option>
-                <option value="средне"> средне</option>
-                <option value="дорого"> дорого</option>
             </select>
             <br> Количество экранов
             <select id="screens_select">
@@ -134,6 +120,63 @@
             throw error;
         }
     }
+    let flags_amount = 2
+    let options_amount = 3
+    let picture_options = [
+        "сцена",
+        "выставочный стенд",
+        "фотозона",
+        "оформление",
+    ]
+    let coast_options = [
+        "дешево",
+        "средне",
+        "дорого",
+    ]
+
+
+    function render_image_tags(parent) {
+        let picture_select = document.createElement("select")
+        picture_options.forEach((option_value) => {
+            let option = document.createElement("option")
+            option.value = option_value
+            option.innerText = option_value
+            picture_select.appendChild(option)
+
+        })
+        parent.appendChild(picture_select)
+        let coast_select = document.createElement("select")
+        coast_options.forEach((option_value) => {
+            let option = document.createElement("option")
+            option.value = option_value
+            option.innerText = option_value
+            coast_select.appendChild(option)
+
+        })
+        parent.appendChild(coast_select)
+    }
+
+    function render_image(event) {
+        event.images.forEach((img) => {
+            let image_container = document.createElement("div")
+            image_container.className = 'image_container'
+            let image = document.createElement("img")
+            image.src = img
+            image.onclick = () => {
+                window.open(window.location.href + img);
+            }
+            image_container.appendChild(image)
+            render_image_tags(image_container)
+            let remove_button = document.createElement("button")
+            remove_button.textContent = "Remove image"
+            image_container.appendChild(remove_button)
+            remove_button.onclick = () => {
+                image_container.remove()
+            }
+            images_container.appendChild(image_container)
+        })
+
+    }
 
     function fetchJsonData(url) {
         return fetch(url)
@@ -150,14 +193,7 @@
         year_info.innerText = event["year"]
         name_info.innerText = event["name"]
         path_info.innerText = event["path"]
-        event.images.forEach((img) => {
-            let image = document.createElement("img")
-            image.src = img
-            image.onclick = () => {
-                window.open(window.location.href + img);
-            }
-            images_container.appendChild(image)
-        })
+        render_image(event)
     }
 
     let event = null
@@ -165,17 +201,38 @@
     function get_event() {
         let current_event = fetchJsonData(window.location.href + "get_json")
         current_event.then((value) => {
+            // event = {
+            //     "id": 6,
+            //     "checked": false,
+            //     "name": "25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438",
+            //     "year": "2011",
+            //     "images": [".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\arka vhod.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\bolshaya_scena.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\small-scene.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\vnutrennie_banneri.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.cb62bbdd389b48898f2e5244977cb2c5.jpg"],
+            //     "path": ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b",
+            //     "event_tags": []
+            // }
             event = value
             render_event(event)
+
 
         })
     }
     get_event()
+
+    function get_images_data() {
+        let images_data = []
+        document.querySelectorAll(".image_container").forEach((child) => {
+            images_data.push({
+                "src": child.getElementsByTagName("img")[0].src,
+                "tags": [child.getElementsByTagName("select")[0].value, child.getElementsByTagName("select")[1].value]
+            })
+        })
+        return images_data
+    }
+
+
     submit_button.onclick = () => {
         let tags = [
-            picture_select.value,
             type_select.value,
-            coast_select.value,
             screens_select.value,
             place_select.value,
             released_select.value,
@@ -186,10 +243,12 @@
             event.tags = tags
             event.comment = comment
             event.checked = true
+            event.images = get_images_data()
+            console.log(event)
             makePostRequest(window.location.href + "/submit", event)
-            setTimeout(()=>{
+            setTimeout(() => {
                 window.location.reload();
-            }, 1000);
+            }, 2000);
         } else {
             txt = "Cancel!";
         }
