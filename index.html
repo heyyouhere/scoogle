@@ -65,8 +65,7 @@
                 <option value="концерт"> концерт</option>
                 <option value="премия"> премия</option>
                 <option value="фестиваль"> фестиваль</option>
-                <option value="гос"> гос</option>
-                <option value="мероприятие"> мероприятие</option>
+                <option value="госмероприятие"> госмероприятие</option>
             </select>
             <br> Количество экранов
             <select id="screens_select">
@@ -76,8 +75,7 @@
             <br> Площадка
             <select id="place_select">
                 <option value="ГКД"> ГКД </option>
-                <option value="КЗ"> КЗ </option>
-                <option value="Москва"> Москва </option>
+                <option value="КЗ_Москва"> КЗ Москва </option>
                 <option value="Live Arena"> Live Arena </option>
                 <option value="иное"> иное </option>
             </select>
@@ -162,6 +160,7 @@
             image_container.className = 'image_container'
             let image = document.createElement("img")
             image.src = img
+            image.setAttribute("img_str", img)
             image.onclick = () => {
                 window.open(window.location.href + img);
             }
@@ -201,16 +200,16 @@
     function get_event() {
         let current_event = fetchJsonData(window.location.href + "get_json")
         current_event.then((value) => {
-            // event = {
-            //     "id": 6,
-            //     "checked": false,
-            //     "name": "25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438",
-            //     "year": "2011",
-            //     "images": [".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\arka vhod.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\bolshaya_scena.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\small-scene.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\vnutrennie_banneri.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.cb62bbdd389b48898f2e5244977cb2c5.jpg"],
-            //     "path": ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b",
-            //     "event_tags": []
-            // }
-            event = value
+            //event = value
+            event = {
+                "id": 6,
+                "checked": false,
+                "name": "25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438",
+                "year": "2011",
+                "images": [".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\arka vhod.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\bolshaya_scena.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\small-scene.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\vnutrennie_banneri.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.cb62bbdd389b48898f2e5244977cb2c5.jpg"],
+                "path": ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b",
+                "event_tags": []
+            }
             render_event(event)
 
 
@@ -222,7 +221,8 @@
         let images_data = []
         document.querySelectorAll(".image_container").forEach((child) => {
             images_data.push({
-                "src": child.getElementsByTagName("img")[0].src,
+                "src": child.getElementsByTagName("img")[0].getAttribute("img_str"),
+                //"src": child.getElementsByTagName("img")[0].src,
                 "tags": [child.getElementsByTagName("select")[0].value, child.getElementsByTagName("select")[1].value]
             })
         })
