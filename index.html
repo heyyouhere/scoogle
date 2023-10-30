@@ -41,6 +41,11 @@
             height: 20%;
         }
         
+        .remove_image_button {
+            background-color: red;
+            color: white;
+        }
+        
         img {
             width: 40%;
         }
@@ -52,7 +57,6 @@
         <div class="left-half">
             <div id="images_container">
             </div>
-            <button> Remove image </button>
 
         </div>
         <div class="right-half">
@@ -121,8 +125,8 @@
     let flags_amount = 2
     let options_amount = 3
     let picture_options = [
-        "сцена",
         "выставочный стенд",
+        "сцена",
         "фотозона",
         "оформление",
     ]
@@ -130,6 +134,18 @@
         "дешево",
         "средне",
         "дорого",
+    ]
+
+    let scene_extra_options = [
+        "кинетика",
+        "много декора",
+        "прямоугольная",
+        "округлая",
+    ]
+    let photozone_extra_options = [
+        "интерактивная",
+        "технологичная",
+        "декор",
     ]
 
 
@@ -140,8 +156,46 @@
             option.value = option_value
             option.innerText = option_value
             picture_select.appendChild(option)
-
         })
+        picture_select.onchange = () => {
+            if (picture_select.value == 'сцена') {
+                var list = parent.getElementsByClassName("extra_option");
+                for (let item of list) {
+                    item.remove()
+                }
+                let extra_option_select = document.createElement("select")
+                extra_option_select.className = "extra_option"
+                scene_extra_options.forEach((extra_option) => {
+                    let extra_option_node = document.createElement("option")
+                    extra_option_node.value = extra_option
+                    extra_option_node.innerText = extra_option
+                    extra_option_select.appendChild(extra_option_node)
+                })
+                parent.insertBefore(extra_option_select, parent.getElementsByClassName('remove_image_button')[0])
+
+
+
+            } else if (picture_select.value == 'фотозона') {
+                var list = parent.getElementsByClassName("extra_option");
+                for (let item of list) {
+                    item.remove()
+                }
+                let extra_option_select = document.createElement("select")
+                extra_option_select.className = "extra_option"
+                photozone_extra_options.forEach((extra_option) => {
+                    let extra_option_node = document.createElement("option")
+                    extra_option_node.value = extra_option
+                    extra_option_node.innerText = extra_option
+                    extra_option_select.appendChild(extra_option_node)
+                })
+                parent.insertBefore(extra_option_select, parent.getElementsByClassName('remove_image_button')[0])
+            } else {
+                var list = parent.getElementsByClassName("extra_option");
+                for (let item of list) {
+                    item.remove()
+                }
+            }
+        }
         parent.appendChild(picture_select)
         let coast_select = document.createElement("select")
         coast_options.forEach((option_value) => {
@@ -168,6 +222,7 @@
             render_image_tags(image_container)
             let remove_button = document.createElement("button")
             remove_button.textContent = "Remove image"
+            remove_button.className = "remove_image_button"
             image_container.appendChild(remove_button)
             remove_button.onclick = () => {
                 image_container.remove()
@@ -200,19 +255,17 @@
     function get_event() {
         let current_event = fetchJsonData(window.location.href + "get_json")
         current_event.then((value) => {
-            //event = value
-            event = {
-                "id": 6,
-                "checked": false,
-                "name": "25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438",
-                "year": "2011",
-                "images": [".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\arka vhod.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\bolshaya_scena.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\small-scene.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\vnutrennie_banneri.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.cb62bbdd389b48898f2e5244977cb2c5.jpg"],
-                "path": ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b",
-                "event_tags": []
-            }
+            event = value
+                // event = {
+                //     "id": 6,
+                //     "checked": false,
+                //     "name": "25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438",
+                //     "year": "2011",
+                //     "images": [".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\arka vhod.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\bolshaya_scena.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\small-scene.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\vnutrennie_banneri.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\arka vhod.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\bolshaya_scena.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\small-scene.cb62bbdd389b48898f2e5244977cb2c5.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.a76ef047d8d24c03823acdf41c4ee7c8.jpg", ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b\\.wdmc\\transcoded_files\\d312a08daf7d4218a7d1222eb67d1906\\vnutrennie_banneri.cb62bbdd389b48898f2e5244977cb2c5.jpg"],
+                //     "path": ".\\2011\\25 \u043e\u043f\u0435\u043d \u0413\u0430\u0443\u0434\u0438\\\u044d\u0441\u043a\u0438\u0437\u044b",
+                //     "event_tags": []
+                // }
             render_event(event)
-
-
         })
     }
     get_event()
@@ -220,11 +273,18 @@
     function get_images_data() {
         let images_data = []
         document.querySelectorAll(".image_container").forEach((child) => {
-            images_data.push({
-                "src": child.getElementsByTagName("img")[0].getAttribute("img_str"),
-                //"src": child.getElementsByTagName("img")[0].src,
-                "tags": [child.getElementsByTagName("select")[0].value, child.getElementsByTagName("select")[1].value]
-            })
+            if (child.getElementsByTagName("select").length == 2) {
+                images_data.push({
+                    "src": child.getElementsByTagName("img")[0].getAttribute("img_str"),
+                    "tags": [child.getElementsByTagName("select")[0].value, child.getElementsByTagName("select")[1].value]
+                })
+            } else {
+                images_data.push({
+                    "src": child.getElementsByTagName("img")[0].getAttribute("img_str"),
+                    "tags": [child.getElementsByTagName("select")[0].value, child.getElementsByTagName("select")[1].value, child.getElementsByTagName("select")[2].value]
+                })
+
+            }
         })
         return images_data
     }
@@ -244,7 +304,7 @@
             event.comment = comment
             event.checked = true
             event.images = get_images_data()
-            console.log(event)
+                // console.log(event)
             makePostRequest(window.location.href + "/submit", event)
             setTimeout(() => {
                 window.location.reload();
